@@ -1,3 +1,8 @@
+<p align="center">
+  <img src="https://img.shields.io/badge/Web-FrontEnd-blue" alt="shields"><span> </span>
+  <img src="https://img.shields.io/badge/Angular CLI-17.0.6L-green" alt="shields"><span> </span>
+</p>
+
 # AngularRestapiAuthentication
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.6.
