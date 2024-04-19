@@ -14,10 +14,11 @@ export class AuthService {
   constructor(private httpClient: HttpClient) { }
 
   public login(username: string, password: string): Observable<ApiResponse<String>> {
-    const formData = new FormData();
-    formData.append('username', username);
-    formData.append('password', password);
-    return this.httpClient.post<ApiResponse<String>>(ApiEndPoint.API_LOGIN_ENDPOINT, formData);
+    const userCredential = {
+      "username": username,
+      "password": password,
+      };
+    return this.httpClient.post<ApiResponse<String>>(ApiEndPoint.API_LOGIN_ENDPOINT, userCredential);
   }
 
   // public logout(): Observable<any> {

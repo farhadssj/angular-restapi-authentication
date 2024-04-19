@@ -13,3 +13,7 @@ body {
       Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
       "Segoe UI Symbol";
 }
+main {
+  margin: 20px auto;
+  width: 80%;
+}

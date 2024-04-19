@@ -44,8 +44,7 @@ button:hover {
 }
 
 .error-status{
-    margin-top: 20px;
     color: red;
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
 }
