@@ -25,22 +25,16 @@ export class AuthService {
   //   return this.httpClient.get<any>(ApiEndPoint.API_LOGOUT_ENDPOINT);
   // }
 
-  // public userRegistration(userName: string, password: string, userEmail: string, mobileNumber: string): Observable<UserRegistrationResponse> {
+  public userRegistration(name: string, username: string, password: string, role: string): Observable<ApiResponse<String>> {
 
-  //   const headers = new HttpHeaders({
-  //     'Content-Type': 'application/json',
-  //   });
-
-  //   const userData = {
-  //     "name": userName,
-  //     "password": password,
-  //     "email": userEmail,
-  //     "mobileNumber": mobileNumber
-  //   }
-  //   console.log(userData);
-
-  //   return this.httpClient.post<UserRegistrationResponse>(ApiEndPoint.API_USER_REGISTRATION_ENDPOINT, userData, { headers });
-  // }
+    const userData = {
+      "name": name,
+      "username": username,
+      "password": password,
+      "role": role
+    }
+    return this.httpClient.post<ApiResponse<String>>(ApiEndPoint.API_REGISTER_ENDPOINT, userData);
+  }
 
   public saveUserSession(authResult: ApiResponse<String>) {
     localStorage.setItem(AuthService.AUTH_STORAGE_KEY, JSON.stringify(authResult.details));

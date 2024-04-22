@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './login.component.css'
 })
 export class LoginComponent implements OnInit {
+
   returnUrl!: String;
   loginForm!: FormGroup;
   submitted = false;
@@ -87,6 +88,10 @@ export class LoginComponent implements OnInit {
           console.log("Log in API Call complete");
         }
       });
+  }
+
+  navigateToRegisterView() {
+    this.router.navigate([AppRoute.REGISTER_ROUTE]);
   }
 
 

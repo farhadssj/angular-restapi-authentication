@@ -16,4 +16,7 @@
         <button [disabled]="loading" type="submit">
             <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>{{ (loading)?'' : "Login"}}</button>
     </form>
+    <div>
+        <p>Not have an account, <a (click)="navigateToRegisterView()">Sign Up</a></p>
+    </div>
 </div>
