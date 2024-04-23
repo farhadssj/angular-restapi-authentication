@@ -4,74 +4,75 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../service/auth.service';
 import { AppRoute } from '../constants/app-route';
+import { EmployeeService } from '../service/employee.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from '../interceptor/auth.interceptor';
 
 @Component({
-  selector: 'app-register',
+  selector: 'app-add-employee',
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
+  providers: [ 
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
+  templateUrl: './edit-employee.component.html',
+  styleUrl: './edit-employee.component.css'
 })
-export class RegisterComponent implements OnInit{
-  registrationForm!: FormGroup;
+export class EditEmployeeComponent implements OnInit{
+  employeeForm!: FormGroup;
   submitted = false;
   loading = false;
-  regError: string | null = null;
+  apiError: string | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService
+    private employeeService: EmployeeService
   ) {
-    // redirect to perspective dashboard if already logged in
-    if (this.authService.isUserLogin()) {
-      this.router.navigate([AppRoute.HOME_ROUTE]);
-    }
   }
 
   ngOnInit() {
-    this.registrationForm = this.formBuilder.group({
+    this.employeeForm = this.formBuilder.group({
       name: ['', Validators.required],
-      username: ['', Validators.required],
-      password: ['', Validators.required],
-      role: ['', Validators.required],
+      age: [null, Validators.required],
+      department: ['', Validators.required],
+      salary: [null, Validators.required],
     });
   }
 
-  get registrationFormControl() {
-    return this.registrationForm.controls;
+  get employeeFormControl() {
+    return this.employeeForm.controls;
   }
 
   public onSubmit() {
     this.submitted = true;
-    this.regError = null;
-    console.log("Registration form submitted");
+    this.apiError = null;
+    console.log("Employee form submitted");
 
     // stop here if form is invalid
-    if (this.registrationForm.invalid) {
-      console.log("Registration form Invalided");
+    if (this.employeeForm.invalid) {
+      console.log("Employee form Invalided");
       return;
     }
     if (this.loading) {
-      console.log("Registration form already loading");
+      console.log("Employee form already loading");
       return;
     }
     this.loading = true;
-    console.log("Registration api calling...: ");
+    console.log("Employee api calling...: ");
 
-    this.authService.userRegistration(
-      this.registrationForm.value.name,
-      this.registrationForm.value.username,
-      this.registrationForm.value.password,
-      this.registrationForm.value.role)
+    this.employeeService.addEmployee(
+      this.employeeForm.value.name,
+      this.employeeForm.value.age,
+      this.employeeForm.value.department,
+      this.employeeForm.value.salary)
       .subscribe({
         next: (data) => {
           this.loading = false;
-          this.regError = null;
+          this.apiError = null;
           console.log("Registration in Success Response from server: " + JSON.stringify(data));
           if (data) {
-            this.authService.saveUserSession(data);
             this.router.navigate([AppRoute.HOME_ROUTE]);
           }
         },
@@ -79,9 +80,9 @@ export class RegisterComponent implements OnInit{
           console.log("Registration in Failure Response from server: "+ JSON.stringify(error));
           this.loading = false;
           if(error.error["message"] != undefined) {
-            this.regError = error.error["message"];
+            this.apiError = error.error["message"];
           } else {
-            this.regError = "Registration failed!. Try again";
+            this.apiError = "Registration failed!. Try again";
           }
         },
         complete: () => {
@@ -90,8 +91,8 @@ export class RegisterComponent implements OnInit{
       });
   }
 
-  navigateToSignInView() {
-    this.router.navigate([AppRoute.LOGIN_ROUTE]);
+  navigateToHomeView() {
+    this.router.navigate([AppRoute.HOME_ROUTE]);
   }
 
 }

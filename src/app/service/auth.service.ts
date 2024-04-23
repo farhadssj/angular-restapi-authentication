@@ -55,4 +55,15 @@ export class AuthService {
     }
     return false;
   }
+
+  public getUserAccessToken(): string {
+    const authResponseStr = this.getUserSession();
+    if (authResponseStr) {
+      const accessToken: string = JSON.parse(authResponseStr);
+      if (accessToken) {
+        return accessToken;
+      }
+    }
+    return '';
+  }
 }

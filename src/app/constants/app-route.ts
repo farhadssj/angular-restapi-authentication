@@ -6,4 +6,5 @@ export class AppRoute {
     public static LOGIN_ROUTE = 'login';
     public static REGISTER_ROUTE = 'register';
     public static ADD_EMPLOYEE_ROUTE = 'add-employee';
+    public static EDIT_EMPLOYEE_ROUTE = 'edit-employee';
 }

@@ -40,4 +40,12 @@ export class HomeComponent implements OnInit {
   navigateToAddEmployeeView() {
     this.router.navigate([AppRoute.ADD_EMPLOYEE_ROUTE]);
   }
+
+  navigateToEditEmployeeView(employeeID: number) {
+    this.router.navigate([AppRoute.EDIT_EMPLOYEE_ROUTE+"/" + employeeID]);
+  }
+
+  deleteEmployee(arg0: number) {
+    throw new Error('Method not implemented.');
+  }
 }
