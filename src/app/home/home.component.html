@@ -1,5 +1,6 @@
 <div>
     <h2>Employee List</h2>
+    <i *ngIf="isLoading" class="fa fa-spinner fa-spin"></i>
     <input type="button" value="Add Employee" (click)="navigateToAddEmployeeView()" style="display: block;width: fit-content;float: right;margin-bottom: 5px;">
     <table>
         <tr>
@@ -10,13 +11,13 @@
             <th style="background-color: #333333; color: #FFFFFF;">Action</th>
         </tr>
         <tr *ngFor="let employee of employeeList; index as i">
-            <td> {{employee.name}} </td>
+            <td contenteditable="true" (input)="updateValue(employee.id, 'name', $event)"> {{employee.name}} </td>
             <td> {{employee.age}} </td>
             <td> {{employee.department}} </td>
             <td> {{employee.salary}} </td>
             <td>
-            <button><i class="fa-regular fa-pen-to-square"></i></button>
-            <button (click)="navigateToEditEmployeeView(employee.id)"><i class="fa-solid fa-trash-can"></i></button> </td>
+            <button (click)="navigateToEditEmployeeView(employee.id)"><i class="fa-regular fa-pen-to-square"></i></button>
+            <button (click)="deleteEmployee(employee.id)"><i class="fa-solid fa-trash-can"></i></button> </td>
         </tr>
     </table>
 </div>

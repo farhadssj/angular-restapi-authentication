@@ -1,7 +1,7 @@
 <div class="employee-container">
     <h2>Edit Employee</h2>
     <span class="error-status" *ngIf="apiError != null">{{apiError}}</span>
-    <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+    <form *ngIf="employeeForm" [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
             <label for="name">Name:</label>
             <input type="text" id="name" formControlName="name" placeholder="Enter your name">
@@ -33,6 +33,6 @@
             *ngIf="(employeeFormControl['salary'].touched || submitted) && employeeFormControl['salary'].errors?.['required']">Salary is required</span>
         </div> 
         <button [disabled]="loading" type="submit">
-            <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>{{ (loading)?'' : "Add"}}</button>
+            <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>{{ (loading)?'' : "Update"}}</button>
     </form>
 </div>

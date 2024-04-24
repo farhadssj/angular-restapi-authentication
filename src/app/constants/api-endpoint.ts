@@ -7,4 +7,7 @@ export class ApiEndPoint {
     public static API_ALL_EMPLOYEE_ENDPOINT = ApiEndPoint.API_BASE_ENDPOINT + 'employee_info/get_all';
     public static API_ADD_EMPLOYEE_ENDPOINT = ApiEndPoint.API_BASE_ENDPOINT + 'employee_info/add';
     public static API_UPDATE_EMPLOYEE_ENDPOINT = ApiEndPoint.API_BASE_ENDPOINT + 'employee_info/update';
+    public static API_DELETE_EMPLOYEE_ENDPOINT = ApiEndPoint.API_BASE_ENDPOINT + 'employee_info/delete';
+    public static API_SPECIFIC_EMPLOYEE_ENDPOINT = ApiEndPoint.API_BASE_ENDPOINT + 'employee_info/get';
+    public static API_PATCH_EMPLOYEE_ENDPOINT = ApiEndPoint.API_BASE_ENDPOINT + 'employee_info/patch';
 }

@@ -4,6 +4,8 @@ import { EmployeeService } from '../service/employee.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AppRoute } from '../constants/app-route';
+import { Constant } from '../constants/constant';
+import { debounceTime, tap } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -15,6 +17,7 @@ import { AppRoute } from '../constants/app-route';
 export class HomeComponent implements OnInit {
 
   employeeList: Employee[] = [];
+  isLoading: boolean = false;
 
   constructor(private employeeService: EmployeeService, private router: Router){
 
@@ -45,7 +48,36 @@ export class HomeComponent implements OnInit {
     this.router.navigate([AppRoute.EDIT_EMPLOYEE_ROUTE+"/" + employeeID]);
   }
 
-  deleteEmployee(arg0: number) {
-    throw new Error('Method not implemented.');
+  deleteEmployee(employeeID: number) {
+    this.employeeService.deleteEmployee(employeeID).subscribe({
+      next: (data) => { 
+        this.employeeList = this.employeeList.filter(item => item.id != employeeID);
+       },
+      error: (error) => { },
+      complete: () => { }
+    });
+  }
+
+  updateValue(employeeID: number, field: string, event: any) {
+    // this.data[index][field] = value;
+    console.log("updateValue>>value:" + event.target.textContent + " >>field:" + field + " >>employeeID:" + employeeID);
+    this.employeeService.patchEmployee(employeeID, field, event.target.textContent)
+    .pipe(
+      debounceTime(Constant.DEFAULT_API_CALL_DEBOUNCE_TIME),
+      tap(() => {
+        this.isLoading = true;
+        console.log("updateValue>>tap");
+      })
+    )
+    .subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        console.log("updateValue>>subscribe>>response: " + JSON.stringify(response));
+      },
+      error: (error) => {
+        console.log("updateValue>>subscribe>>error: " + JSON.stringify(error));
+       },
+      complete: () => { }
+    });
   }
 }

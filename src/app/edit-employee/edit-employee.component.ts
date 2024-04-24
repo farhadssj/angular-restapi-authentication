@@ -7,6 +7,7 @@ import { AppRoute } from '../constants/app-route';
 import { EmployeeService } from '../service/employee.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from '../interceptor/auth.interceptor';
+import { Employee } from '../models/employee';
 
 @Component({
   selector: 'app-add-employee',
@@ -23,21 +24,41 @@ export class EditEmployeeComponent implements OnInit{
   submitted = false;
   loading = false;
   apiError: string | null = null;
+  employee!: Employee;
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private employeeService: EmployeeService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-    this.employeeForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      age: [null, Validators.required],
-      department: ['', Validators.required],
-      salary: [null, Validators.required],
+    this.route.url.subscribe(segments => {
+      const employeeID = parseInt(segments[segments.length - 1].path);
+      if(isNaN(employeeID)){
+        this.navigateToHomeView();
+      } else {
+        this.fetchEmployeeInfo(employeeID);
+      }
+    });
+  }
+
+  fetchEmployeeInfo(employeeID: number) {
+    this.employeeService.getEmployee(employeeID).subscribe({
+      next: (result) => {
+        this.employee = result.details;
+        this.employeeForm = this.formBuilder.group({
+          name: [this.employee.name, Validators.required],
+          age: [this.employee.age, Validators.required],
+          department: [this.employee.department, Validators.required],
+          salary: [this.employee.salary, Validators.required],
+        });
+       },
+      error: (error) => {
+        this.navigateToHomeView();
+      },
+      complete: () => { }
     });
   }
 
@@ -62,7 +83,8 @@ export class EditEmployeeComponent implements OnInit{
     this.loading = true;
     console.log("Employee api calling...: ");
 
-    this.employeeService.addEmployee(
+    this.employeeService.updateEmployee(
+      this.employee.id,
       this.employeeForm.value.name,
       this.employeeForm.value.age,
       this.employeeForm.value.department,
@@ -73,7 +95,7 @@ export class EditEmployeeComponent implements OnInit{
           this.apiError = null;
           console.log("Registration in Success Response from server: " + JSON.stringify(data));
           if (data) {
-            this.router.navigate([AppRoute.HOME_ROUTE]);
+            this.navigateToHomeView();
           }
         },
         error: (error) => {
