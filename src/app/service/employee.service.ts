@@ -28,7 +28,7 @@ export class EmployeeService {
     return this.httpClient.put<ApiResponse<null>>(ApiEndPoint.API_UPDATE_EMPLOYEE_ENDPOINT + "/" + employeeID, new Employee(name, age, department, salary));
   }
 
-  public patchEmployee(employeeID: number, fieldName: string, value : string): Observable<ApiResponse<null>> {
+  public patchEmployee(employeeID: number, fieldName: string, value : any): Observable<ApiResponse<null>> {
     const userData = {
       [fieldName]: value
     };

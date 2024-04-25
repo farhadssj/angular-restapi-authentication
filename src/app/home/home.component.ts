@@ -58,10 +58,9 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  updateValue(employeeID: number, field: string, event: any) {
-    // this.data[index][field] = value;
-    console.log("updateValue>>value:" + event.target.textContent + " >>field:" + field + " >>employeeID:" + employeeID);
-    this.employeeService.patchEmployee(employeeID, field, event.target.textContent)
+  updateValue(employeeID: number, field: string, event: any, dataType: string) {
+    const patchValueString = event.target.textContent;
+    this.employeeService.patchEmployee(employeeID, field, (dataType == 'number')?parseInt(patchValueString):patchValueString)
     .pipe(
       debounceTime(Constant.DEFAULT_API_CALL_DEBOUNCE_TIME),
       tap(() => {
